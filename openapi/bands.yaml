@@ -113,7 +113,31 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestParameters:
           integration.request.path.bandId: method.request.path.bandId
-        uri: http://bandstore.execute-api.us-east-1.amazonaws.com/bandstore/bands/{bandId}
+        uri: https://theaudiodb.com/api/v1/json/2/artist.php?i={bandId}
+        passthroughBehavior: when_no_match
+        httpMethod: GET
+        type: http
+    delete:
+      tags:
+      - bands
+      summary: Delete a band by its ID
+      operationId: DeleteBand
+      parameters:
+      - name: bandId
+        in: path
+        description: Band ID
+        required: true
+        type: string
+      responses:
+        '204':
+          description: No content
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: '204'
+        requestParameters:
+          integration.request.path.bandId: method.request.path.bandId
+        uri: https://theaudiodb.com/api/v1/json/2/artist.php?i={bandId}
         passthroughBehavior: when_no_match
         httpMethod: GET
         type: http
