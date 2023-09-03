@@ -15,7 +15,7 @@ class BandRepository(private val bandRepositoryJdbc: BandRepositoryJdbc) : BandR
     override fun findById(id: String) = bandRepositoryJdbc.findById(id).getOrNull()?.toDomain()
 
     override fun findAll(offset: Int, page: Int) =
-        bandRepositoryJdbc.findAll(PageRequest.of(offset, page)).map { it.toDomain() }
+        bandRepositoryJdbc.findAll(PageRequest.of(offset, page)).content.map { it.toDomain() }
 
     override fun delete(id: String) = bandRepositoryJdbc.deleteById(id)
 }
