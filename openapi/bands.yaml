@@ -38,10 +38,12 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
-        uri: http://bandstore.execute-api.us-east-1.amazonaws.com/bandstore/bands
-        passthroughBehavior: when_no_match
+        uri: "http://${nlb_dns_name}"
+        payloadFormatVersion: 1.0
+        connectionId: "${vpc_link_id}"
         httpMethod: POST
-        type: http
+        type: HTTP_PROXY
+        connectionType: VPC_LINK
     get:
       tags:
       - bands
