@@ -61,7 +61,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>aws-api-gateway-hands-on</finalName>
+		<finalName>app</finalName>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
 		<plugins>
 			<plugin>

@@ -1,3 +1,5 @@
 data "aws_lb" "nlb" {
-   name = "${var.application_name}-nlb"
+  tags = {
+    Name = "aws-api-gateway-hands-on-app-nlb"
+  }
 }
