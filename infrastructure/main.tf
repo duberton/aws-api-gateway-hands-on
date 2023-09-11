@@ -33,5 +33,5 @@ module "ecs" {
 module "api_gateway" {
   source           = "./modules/api_gateway"
   application_name = var.application_name
-  depends_on       = [module.lb]
+  depends_on       = [module.ecs]
 }
