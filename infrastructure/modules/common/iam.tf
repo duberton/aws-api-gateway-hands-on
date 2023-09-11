@@ -1,4 +1,4 @@
-    resource "aws_iam_role" "execution_role" {
+resource "aws_iam_role" "execution_role" {
   name               = "execution_role"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
 }
@@ -37,6 +37,18 @@ data "aws_iam_policy_document" "execution_role_document" {
       "ecr:ListImages",
       "ecr:PutImage",
       "ecr:BatchGetImage"
+    ]
+  }
+
+  statement {
+    resources = ["*"]
+    effect    = "Allow"
+
+    actions = [
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
     ]
   }
 
