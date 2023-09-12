@@ -27,7 +27,7 @@ jobs:
 
       - name: Docker image
         run: |
-          docker build -t ${{ secrets.AWS_APP_ECR_REPO }}:latest
+          docker build -t ${{ secrets.AWS_APP_ECR_REPO }}:latest .
 
       - name: 'Pushes image to ECR'
         run: |
