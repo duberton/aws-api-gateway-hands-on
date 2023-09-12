@@ -18,7 +18,7 @@ resource "aws_api_gateway_stage" "bands_rest_api_gateway_stage" {
 }
 
 data "template_file" "bands_openapi_file" {
-  template = templatefile("../openapi/bands.yaml", {
+  template = templatefile("../../openapi/bands.yaml", {
     nlb_dns_name = data.aws_lb.nlb.dns_name,
     vpc_link_id = aws_api_gateway_vpc_link.bands_rest_api_gateway_vpc_link.id
   })

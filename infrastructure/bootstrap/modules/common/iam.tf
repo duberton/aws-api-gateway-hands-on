@@ -64,6 +64,14 @@ data "aws_iam_policy_document" "execution_role_document" {
     resources = ["*"]
 
     actions = [
+      "ssm:GetParameters"
+    ]
+  }
+
+  statement {
+    resources = ["*"]
+
+    actions = [
       "logs:CreateLogStream",
       "logs:CreateLogGroup",
       "logs:PutLogEvents"

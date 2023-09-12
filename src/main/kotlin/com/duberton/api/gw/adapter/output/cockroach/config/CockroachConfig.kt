@@ -1,7 +1,7 @@
-package com.duberton.api.gw.adapter.cockroach.config
+package com.duberton.api.gw.adapter.output.cockroach.config
 
-import com.duberton.api.gw.adapter.cockroach.BandRepository
-import com.duberton.api.gw.adapter.cockroach.jdbc.BandRepositoryJdbc
+import com.duberton.api.gw.adapter.output.cockroach.BandRepository
+import com.duberton.api.gw.adapter.output.cockroach.jdbc.BandRepositoryJdbc
 import org.postgresql.ds.PGSimpleDataSource
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean

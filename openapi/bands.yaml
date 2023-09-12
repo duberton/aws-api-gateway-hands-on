@@ -38,7 +38,7 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
-        uri: "http://${nlb_dns_name}"
+        uri: "http://${nlb_dns_name}/v1/bands"
         payloadFormatVersion: 1.0
         connectionId: "${vpc_link_id}"
         httpMethod: POST
@@ -79,11 +79,13 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestParameters:
           integration.request.querystring.page: method.request.querystring.page
-          integration.request.querystring.type: method.request.querystring.offset
-        uri: http://bandstore.execute-api.us-east-1.amazonaws.com/bandstore/bands
-        passthroughBehavior: when_no_match
+          integration.request.querystring.offset: method.request.querystring.offset
+        uri: "http://${nlb_dns_name}/v1/bands"
+        payloadFormatVersion: 1.0
+        connectionId: "${vpc_link_id}"
         httpMethod: GET
-        type: http
+        type: HTTP_PROXY
+        connectionType: VPC_LINK
   "/bands/{bandId}":
     get:
       tags:
@@ -115,10 +117,12 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestParameters:
           integration.request.path.bandId: method.request.path.bandId
-        uri: https://theaudiodb.com/api/v1/json/2/artist.php?i={bandId}
-        passthroughBehavior: when_no_match
+        uri: "http://${nlb_dns_name}/v1/bands/{bandId}"
+        payloadFormatVersion: 1.0
+        connectionId: "${vpc_link_id}"
         httpMethod: GET
-        type: http
+        type: HTTP_PROXY
+        connectionType: VPC_LINK
     delete:
       tags:
       - bands
@@ -139,10 +143,12 @@ paths:
             statusCode: '204'
         requestParameters:
           integration.request.path.bandId: method.request.path.bandId
-        uri: https://theaudiodb.com/api/v1/json/2/artist.php?i={bandId}
-        passthroughBehavior: when_no_match
-        httpMethod: GET
-        type: http
+        uri: "http://${nlb_dns_name}/v1/bands/{bandId}"
+        payloadFormatVersion: 1.0
+        connectionId: "${vpc_link_id}"
+        httpMethod: DELETE
+        type: HTTP_PROXY
+        connectionType: VPC_LINK
 definitions:
   Bands:
     type: array

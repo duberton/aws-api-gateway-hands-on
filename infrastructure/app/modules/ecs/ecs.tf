@@ -1,7 +1,7 @@
 module "ecs" {
   source = "terraform-aws-modules/ecs/aws"
 
-  cluster_name = "${var.application_name}-ecs"
+  cluster_name = "${var.application_name}-cluster"
 
   fargate_capacity_providers = {
     FARGATE = {
@@ -19,21 +19,22 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   [
     {
       "name": "${var.application_name}",
-      "image": "${data.aws_ecr_repository.ecr.repository_url}/${var.application_name}",
-      "environment": [
+      "image": "${data.aws_ecr_repository.ecr.repository_url}:latest",
+      "secrets": [
         {
           "name": "DB_URL",
-          "value": "url"
+          "valueFrom": "${data.aws_ssm_parameter.db_url.arn}"
         },
         {
           "name": "DB_USER",
-          "value": "user"
+          "valueFrom": "${data.aws_ssm_parameter.db_user.arn}"
         },
         {
           "name": "DB_PASSWORD",
-          "value": "pwd"
+          "valueFrom": "${data.aws_ssm_parameter.db_password.arn}"
         }
       ],
+      "environment": [],
       "essential": true,
       "portMappings": [
         {
@@ -47,7 +48,9 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         "options": {
           "awslogs-region": "us-east-1",
           "awslogs-group": "/aws/ecs/${var.application_name}",
-          "awslogs-stream-prefix": "ecs"
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+
         }
       },
       "healthCheck": {

@@ -1,6 +1,6 @@
-package com.duberton.api.gw.adapter.cockroach.ext
+package com.duberton.api.gw.adapter.output.cockroach.ext
 
-import com.duberton.api.gw.adapter.cockroach.entity.BandEntity
+import com.duberton.api.gw.adapter.output.cockroach.entity.BandEntity
 import com.duberton.api.gw.application.domain.Band
 
 fun Band.toEntity() = BandEntity(

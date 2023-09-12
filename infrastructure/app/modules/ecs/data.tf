@@ -41,11 +41,22 @@ data "aws_security_group" "sg" {
   }
 }
 
-
 data "aws_iam_role" "execution_role" {
   name = "execution_role"
 }
 
 data "aws_iam_role" "task_role" {
   name = "task_role"
+}
+
+data "aws_ssm_parameter" "db_url" {
+  name = "db_url"
+}
+
+data "aws_ssm_parameter" "db_user" {
+  name = "db_user"
+}
+
+data "aws_ssm_parameter" "db_password" {
+  name = "db_password"
 }
