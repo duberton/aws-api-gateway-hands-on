@@ -9,5 +9,6 @@ class BandEntity(
     @Id @GeneratedValue var id: String?,
     val name: String,
     val genre: String,
-    val members: List<String>
+    val members: List<String>,
+    val createdAt: String
 )

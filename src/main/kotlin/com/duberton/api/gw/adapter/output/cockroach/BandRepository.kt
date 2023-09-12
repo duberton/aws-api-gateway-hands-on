@@ -6,6 +6,7 @@ import com.duberton.api.gw.adapter.output.cockroach.jdbc.BandRepositoryJdbc
 import com.duberton.api.gw.application.domain.Band
 import com.duberton.api.gw.application.port.output.BandRepositoryPort
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import kotlin.jvm.optionals.getOrNull
 
 class BandRepository(private val bandRepositoryJdbc: BandRepositoryJdbc) : BandRepositoryPort {
@@ -14,8 +15,11 @@ class BandRepository(private val bandRepositoryJdbc: BandRepositoryJdbc) : BandR
 
     override fun findById(id: String) = bandRepositoryJdbc.findById(id).getOrNull()?.toDomain()
 
-    override fun findAll(offset: Int, page: Int) =
-        bandRepositoryJdbc.findAll(PageRequest.of(offset, page)).content.map { it.toDomain() }
+    override fun findAll(offset: Int, page: Int) = bandRepositoryJdbc.findAll(
+        PageRequest.of(
+            offset, page, Sort.by(Sort.Direction.ASC, "createdAt")
+        )
+    ).content.map { it.toDomain() }
 
     override fun delete(id: String) = bandRepositoryJdbc.deleteById(id)
 }

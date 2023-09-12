@@ -9,5 +9,5 @@ fun BandRequest.toDomain() = Band(
 )
 
 fun Band.toResponse() = BandResponse(
-    id = id, name = name, genre = genre, members = members
+    id = id, name = name, genre = genre, members = members, createdAt = createdAt
 )

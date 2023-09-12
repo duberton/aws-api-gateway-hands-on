@@ -26,3 +26,6 @@ databaseChangeLog:
               - column:
                   name: members
                   type: varchar[]
+              - column:
+                  name: created_at
+                  type: timestamp

@@ -1,60 +1,34 @@
 {
 	"info": {
-		"_postman_id": "c26db5ab-ad56-4463-8bdb-c6dd242d6d22",
-		"name": "AWS API Gateway - Band",
+		"_postman_id": "1a54d36f-b642-4180-bb1e-530302c86e2f",
+		"name": "Band",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "738268"
 	},
 	"item": [
-		{
-			"name": "Band",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"Converge\",\n    \"genre\": \"Hardcore\",\n    \"members\": [\n        \"Jacob\",\n        \"Nate\"\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/v1/bands",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"v1",
-						"bands"
-					]
-				}
-			},
-			"response": []
-		},
 		{
 			"name": "Bands",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/v1/bands?offset=0&page=1",
-					"protocol": "http",
+					"raw": "https://{{api_gw_id}}.execute-api.us-east-1.amazonaws.com/default/bands?offset=10&page=1",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"{{api_gw_id}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
 					],
-					"port": "8080",
 					"path": [
-						"v1",
+						"default",
 						"bands"
 					],
 					"query": [
 						{
 							"key": "offset",
-							"value": "0"
+							"value": "10"
 						},
 						{
 							"key": "page",
@@ -66,26 +40,29 @@
 			"response": []
 		},
 		{
-			"name": "Band by BandId",
+			"name": "Band by ID",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/v1/bands/:bandId",
-					"protocol": "http",
+					"raw": "https://{{api_gw_id}}.execute-api.us-east-1.amazonaws.com/default/bands/:bandId",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"{{api_gw_id}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
 					],
-					"port": "8080",
 					"path": [
-						"v1",
+						"default",
 						"bands",
 						":bandId"
 					],
 					"variable": [
 						{
 							"key": "bandId",
-							"value": "05751d30-4086-4cd1-a483-7671f8051672"
+							"value": "77400fb7-14e8-4323-8d23-e8a0374adc54"
 						}
 					]
 				}
@@ -93,27 +70,73 @@
 			"response": []
 		},
 		{
-			"name": "Band by BandId",
+			"name": "Band by ID",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/v1/bands/:bandId",
-					"protocol": "http",
+					"raw": "https://{{api_gw_id}}.execute-api.us-east-1.amazonaws.com/default/bands/:bandId",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"{{api_gw_id}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
 					],
-					"port": "8080",
 					"path": [
-						"v1",
+						"default",
 						"bands",
 						":bandId"
 					],
 					"variable": [
 						{
 							"key": "bandId",
-							"value": "1"
+							"value": "743f4d4c-fd0b-47b1-9bac-1555610d862d"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Band",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Embodiment\",\n    \"genre\": \"Metal\",\n    \"members\": [\n        \"Mendonca\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{api_gw_id}}.execute-api.us-east-1.amazonaws.com/default/bands",
+					"protocol": "https",
+					"host": [
+						"{{api_gw_id}}",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"default",
+						"bands"
 					]
 				}
 			},

@@ -4,5 +4,6 @@ data class BandResponse(
     val id: String?,
     val name: String,
     val genre: String,
-    val members: List<String>
+    val members: List<String>,
+    val createdAt: String
 )
