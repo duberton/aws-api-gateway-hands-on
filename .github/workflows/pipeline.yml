@@ -18,29 +18,26 @@ jobs:
       - name: Clone source code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'corretto'
-          java-version: '17'
-          cache: 'maven'
-      - name: Maven build
-        run: mvn -B package --file pom.xml
+      # - name: Set up JDK 17
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     distribution: 'corretto'
+      #     java-version: '17'
+      #     cache: 'maven'
+      # - name: Maven build
+      #   run: mvn -B package --file pom.xml
 
-      # - name: AWS ECR login
-      #   run: |
-      #     aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REPOSITORY }}
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: AWS ECR login
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_APP_ECR_REPO }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # - name: 'Docker image'
-      #   run: |
-      #     docker build -t ${{ secrets.AWS_ECR_SERVICE }}:${{ github.sha }} .
+      - name: Docker image
+        run: |
+          docker build -t ${{ secrets.AWS_APP_ECR_REPO }}:latest
 
-      # - name: 'Pushes the api image to ECR'
-      #   run: |
-      #     docker tag ${{ secrets.AWS_ECR_SERVICE }}:${{ github.sha }} ${{ secrets.AWS_ECR_REPOSITORY }}/${{ secrets.AWS_ECR_SERVICE }}:${{ github.sha }}
-      #     docker tag ${{ secrets.AWS_ECR_SERVICE }}:${{ github.sha }} ${{ secrets.AWS_ECR_REPOSITORY }}/${{ secrets.AWS_ECR_SERVICE }}:latest
-      #     docker push ${{ secrets.AWS_ECR_REPOSITORY }}/${{ secrets.AWS_ECR_SERVICE }}:${{ github.sha }}
-      #     docker push ${{ secrets.AWS_ECR_REPOSITORY }}/${{ secrets.AWS_ECR_SERVICE }}:latest
+      - name: 'Pushes image to ECR'
+        run: |
+          docker push ${{ secrets.AWS_APP_ECR_REPO }}:latest
