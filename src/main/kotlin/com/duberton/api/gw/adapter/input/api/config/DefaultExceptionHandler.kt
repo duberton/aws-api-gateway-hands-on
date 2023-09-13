@@ -1,6 +1,6 @@
 package com.duberton.api.gw.adapter.input.api.config
 
-import com.duberton.api.gw.adapter.input.api.controller.NotFoundException
+import com.duberton.api.gw.adapter.input.api.controller.exception.NotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
