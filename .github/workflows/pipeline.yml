@@ -37,7 +37,7 @@ jobs:
         env:
           IMAGE_TAG: ${{ secrets.AWS_APP_ECR_REPO }}:${{ github.sha }}
         run: |
-          docker build -t ${{ secrets.AWS_APP_ECR_REPO }}:${{ github.sha }}
+          docker build -t ${{ secrets.AWS_APP_ECR_REPO }}:${{ github.sha }} .
           docker push ${{ secrets.AWS_APP_ECR_REPO }}:${{ github.sha }}
           echo "image=$IMAGE_TAG" >> $GITHUB_OUTPUT
 
