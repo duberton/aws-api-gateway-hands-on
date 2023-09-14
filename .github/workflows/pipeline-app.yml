@@ -5,6 +5,8 @@ on:
     paths:
       - src/**
   pull_request:
+    paths:
+      - src/**
     branches:
       - main
   workflow_dispatch:
@@ -61,11 +63,3 @@ jobs:
           service: ${{ vars.APP_NAME }}
           cluster: '${{ vars.APP_NAME }}-cluster'
           wait-for-service-stability: true
-
-      # - name: Change directory
-      #   run: cd ./infrastructure/app/modules/ecs
-
-      # - name: Set new container def image
-      #   uses: sergeysova/jq-action@v2
-      #   with:
-      #     cmd: 'cat container_definitions.json | jq '.[].image = "${data.aws_ecr_repository.ecr.repository_url}:${{ github.sha }}"' | tee container_definitions.json'
