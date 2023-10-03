@@ -1,8 +1,8 @@
-package com.duberton.api.gw.adapter.output.cockroach
+package com.duberton.api.gw.adapter.output.pg
 
-import com.duberton.api.gw.adapter.output.cockroach.ext.toDomain
-import com.duberton.api.gw.adapter.output.cockroach.ext.toEntity
-import com.duberton.api.gw.adapter.output.cockroach.jdbc.BandRepositoryJdbc
+import com.duberton.api.gw.adapter.output.pg.ext.toDomain
+import com.duberton.api.gw.adapter.output.pg.ext.toEntity
+import com.duberton.api.gw.adapter.output.pg.jdbc.BandRepositoryJdbc
 import com.duberton.api.gw.application.domain.Band
 import com.duberton.api.gw.application.port.output.BandRepositoryPort
 import org.springframework.data.domain.PageRequest

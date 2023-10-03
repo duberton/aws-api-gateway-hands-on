@@ -1,26 +1,26 @@
-package com.duberton.api.gw.adapter.output.cockroach.config
+package com.duberton.api.gw.adapter.output.pg.config
 
-import com.duberton.api.gw.adapter.output.cockroach.BandRepository
-import com.duberton.api.gw.adapter.output.cockroach.jdbc.BandRepositoryJdbc
+import com.duberton.api.gw.adapter.output.pg.BandRepository
+import com.duberton.api.gw.adapter.output.pg.jdbc.BandRepositoryJdbc
 import org.postgresql.ds.PGSimpleDataSource
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class CockroachConfig {
+class PGConfig {
 
-    @Value("\${cockroach.db.url}")
+    @Value("\${pg.db.url}")
     private lateinit var url: String
 
-    @Value("\${cockroach.db.user}")
+    @Value("\${pg.db.user}")
     private lateinit var user: String
 
-    @Value("\${cockroach.db.password}")
+    @Value("\${pg.db.password}")
     private lateinit var password: String
 
     @Bean
-    fun cockroach(): PGSimpleDataSource {
+    fun pg(): PGSimpleDataSource {
         val database = PGSimpleDataSource();
         database.setUrl(url)
         database.user = user

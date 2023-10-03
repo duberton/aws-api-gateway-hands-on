@@ -1,6 +1,6 @@
-package com.duberton.api.gw.adapter.output.cockroach.ext
+package com.duberton.api.gw.adapter.output.pg.ext
 
-import com.duberton.api.gw.adapter.output.cockroach.entity.BandEntity
+import com.duberton.api.gw.adapter.output.pg.entity.BandEntity
 import com.duberton.api.gw.application.domain.Band
 import java.time.LocalDateTime
 

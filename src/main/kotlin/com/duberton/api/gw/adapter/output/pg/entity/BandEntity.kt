@@ -1,4 +1,4 @@
-package com.duberton.api.gw.adapter.output.cockroach.entity
+package com.duberton.api.gw.adapter.output.pg.entity
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table

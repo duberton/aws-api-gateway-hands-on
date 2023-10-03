@@ -1,6 +1,6 @@
-package com.duberton.api.gw.adapter.output.cockroach.jdbc
+package com.duberton.api.gw.adapter.output.pg.jdbc
 
-import com.duberton.api.gw.adapter.output.cockroach.entity.BandEntity
+import com.duberton.api.gw.adapter.output.pg.entity.BandEntity
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
