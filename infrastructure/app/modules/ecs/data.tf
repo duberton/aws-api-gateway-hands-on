@@ -53,10 +53,14 @@ data "aws_ssm_parameter" "db_url" {
   name = "db_url"
 }
 
-data "aws_ssm_parameter" "db_user" {
-  name = "db_user"
+data "aws_secretsmanager_secret" "db_secrets" {
+  name = "db_secrets"
 }
 
-data "aws_ssm_parameter" "db_password" {
-  name = "db_password"
+data "aws_secretsmanager_secret_version" "db_secrets_version" {
+  secret_id = data.aws_secretsmanager_secret.db_secrets.id
+}
+
+data "aws_db_instance" "db" {
+  db_instance_identifier = "bands-postgres-14"
 }

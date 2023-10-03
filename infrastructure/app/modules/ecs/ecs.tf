@@ -1,3 +1,10 @@
+locals {
+  # db_url      = data.aws_ssm_parameter.db_url.value
+  db_url      = data.aws_db_instance.db.endpoint
+  db_user     = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:user::"
+  db_password = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:password::"
+}
+
 module "ecs" {
   source = "terraform-aws-modules/ecs/aws"
 
@@ -22,19 +29,20 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       "image": "${data.aws_ecr_repository.ecr.repository_url}:latest",
       "secrets": [
         {
-          "name": "DB_URL",
-          "valueFrom": "${data.aws_ssm_parameter.db_url.arn}"
-        },
-        {
           "name": "DB_USER",
-          "valueFrom": "${data.aws_ssm_parameter.db_user.arn}"
+          "valueFrom": "${local.db_user}"
         },
         {
           "name": "DB_PASSWORD",
-          "valueFrom": "${data.aws_ssm_parameter.db_password.arn}"
+          "valueFrom": "${local.db_password}"
         }
       ],
-      "environment": [],
+      "environment": [
+        {
+          "name": "DB_URL",
+          "value": "jdbc:postgresql://${local.db_url}/postgres"
+        }
+      ],
       "essential": true,
       "portMappings": [
         {

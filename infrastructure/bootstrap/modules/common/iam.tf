@@ -64,7 +64,8 @@ data "aws_iam_policy_document" "execution_role_document" {
     resources = ["*"]
 
     actions = [
-      "ssm:GetParameters"
+      "ssm:GetParameters",
+      "secretsmanager:GetSecretValue"
     ]
   }
 

@@ -6,6 +6,7 @@ info:
   version: "1.0"
 schemes:
 - https
+
 paths:
   "/bands":
     post:
@@ -22,12 +23,12 @@ paths:
         name: NewBand
         required: true
         schema:
-          "$ref": "#/definitions/NewBandRequest"
+          "$ref": "#/definitions/CreateBandRequest"
       responses:
         '200':
           description: Success
           schema:
-            "$ref": "#/definitions/NewBandResponse"
+            "$ref": "#/definitions/CreateBandResponse"
           headers:
             Access-Control-Allow-Origin:
               type: string
@@ -38,7 +39,7 @@ paths:
             statusCode: '200'
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
-        uri: "http://${nlb_dns_name}/v1/bands"
+        uri: "http://${nlb_dns}/v1/bands"
         payloadFormatVersion: 1.0
         connectionId: "${vpc_link_id}"
         httpMethod: POST
@@ -47,7 +48,7 @@ paths:
     get:
       tags:
       - bands
-      summary: Lists the Bands
+      summary: Lists all the Bands exposing a standard pagination
       operationId: GetBands
       produces:
       - application/json
@@ -80,7 +81,7 @@ paths:
         requestParameters:
           integration.request.querystring.page: method.request.querystring.page
           integration.request.querystring.offset: method.request.querystring.offset
-        uri: "http://${nlb_dns_name}/v1/bands"
+        uri: "http://${nlb_dns}/v1/bands"
         payloadFormatVersion: 1.0
         connectionId: "${vpc_link_id}"
         httpMethod: GET
@@ -90,8 +91,8 @@ paths:
     get:
       tags:
       - bands
-      summary: Find a band by its ID
-      operationId: GetBand
+      summary: Finds a band by ID
+      operationId: GetBandById
       produces:
       - application/json
       parameters:
@@ -117,7 +118,7 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestParameters:
           integration.request.path.bandId: method.request.path.bandId
-        uri: "http://${nlb_dns_name}/v1/bands/{bandId}"
+        uri: "http://${nlb_dns}/v1/bands/{bandId}"
         payloadFormatVersion: 1.0
         connectionId: "${vpc_link_id}"
         httpMethod: GET
@@ -126,8 +127,8 @@ paths:
     delete:
       tags:
       - bands
-      summary: Delete a band by its ID
-      operationId: DeleteBand
+      summary: Deletes a band by ID
+      operationId: DeleteBandById
       parameters:
       - name: bandId
         in: path
@@ -143,7 +144,7 @@ paths:
             statusCode: '204'
         requestParameters:
           integration.request.path.bandId: method.request.path.bandId
-        uri: "http://${nlb_dns_name}/v1/bands/{bandId}"
+        uri: "http://${nlb_dns}/v1/bands/{bandId}"
         payloadFormatVersion: 1.0
         connectionId: "${vpc_link_id}"
         httpMethod: DELETE
@@ -167,7 +168,7 @@ definitions:
         type: array
         items:
           type: string
-  NewBandRequest:
+  CreateBandRequest:
     type: object
     properties:
       name:
@@ -178,7 +179,7 @@ definitions:
         type: array
         items:
           type: string
-  NewBandResponse:
+  CreateBandResponse:
     type: object
     properties:
       id:
