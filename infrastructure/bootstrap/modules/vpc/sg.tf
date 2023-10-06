@@ -1,15 +1,65 @@
-module "sg" {
+module "sg_lb" {
   source = "terraform-aws-modules/security-group/aws"
 
-  name   = "${var.application_name}-sg"
+  name   = "${var.application_name}-sg-nlb"
   vpc_id = module.vpc.vpc_id
 
-  ingress_cidr_blocks = ["0.0.0.0/0"]
-  ingress_rules       = ["all-all"]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      description = "http"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
 
   egress_rules = ["all-all"]
 
   tags = {
-    name = "sg"
+    name = "sg-nlb"
+  }
+}
+
+module "sg_ecs" {
+  source = "terraform-aws-modules/security-group/aws"
+
+  name   = "${var.application_name}-sg-ecs"
+  vpc_id = module.vpc.vpc_id
+
+  ingress_with_source_security_group_id = [
+    {
+      protocol = "tcp"
+      from_port                = 8080
+      to_port                  = 8080
+      source_security_group_id = module.sg_lb.security_group_id
+    }
+  ]
+
+  egress_rules = ["all-all"]
+
+  tags = {
+    name = "sg-ecs"
+  }
+}
+
+module "sg_db" {
+  source = "terraform-aws-modules/security-group/aws"
+
+  name   = "${var.application_name}-sg-db"
+  vpc_id = module.vpc.vpc_id
+
+  ingress_with_source_security_group_id = [
+    {
+      protocol = "tcp"
+      from_port                = 5432
+      to_port                  = 5432
+      source_security_group_id = module.sg_ecs.security_group_id
+    }
+  ]
+  egress_rules = ["all-all"]
+
+  tags = {
+    name = "sg-db"
   }
 }

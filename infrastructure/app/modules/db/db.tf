@@ -26,7 +26,7 @@ module "db" {
   manage_master_user_password = false
 
   port                   = "5432"
-  vpc_security_group_ids = [data.aws_security_group.sg.id]
+  vpc_security_group_ids = [data.aws_security_group.sg_db.id]
   subnet_ids             = data.aws_subnets.private.ids
 
   create_db_instance        = true

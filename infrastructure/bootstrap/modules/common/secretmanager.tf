@@ -7,7 +7,7 @@ resource "aws_secretsmanager_secret" "db_secrets" {
 resource "aws_secretsmanager_secret_version" "db_secrets_version" {
   secret_id = aws_secretsmanager_secret.db_secrets.id
   secret_string = jsonencode({
-    user     = "user",
-    password = "password"
+    user     = "duberton",
+    password = "secret-password"
   })
 }

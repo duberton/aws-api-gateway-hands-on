@@ -27,8 +27,8 @@ data "aws_subnets" "private" {
   }
 }
 
-data "aws_security_group" "sg" {
+data "aws_security_group" "sg_db" {
   tags = {
-    name = "sg"
+    name = "sg-db"
   }
 }

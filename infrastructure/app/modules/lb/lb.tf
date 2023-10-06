@@ -7,7 +7,7 @@ module "nlb" {
 
   vpc_id          = data.aws_vpc.vpc.id
   subnets         = data.aws_subnets.public.ids
-  security_groups = [data.aws_security_group.sg.id]
+  security_groups = [data.aws_security_group.sg_nlb.id]
 
   target_groups = [
     {

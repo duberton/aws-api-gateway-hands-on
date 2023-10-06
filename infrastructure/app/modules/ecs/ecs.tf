@@ -99,7 +99,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   network_configuration {
     subnets         = data.aws_subnets.private.ids
-    security_groups = [data.aws_security_group.sg.id]
+    security_groups = [data.aws_security_group.sg_ecs.id]
   }
 
   deployment_maximum_percent         = 100

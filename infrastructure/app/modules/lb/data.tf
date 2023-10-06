@@ -25,8 +25,8 @@ data "aws_subnets" "public" {
   }
 }
 
-data "aws_security_group" "sg" {
+data "aws_security_group" "sg_nlb" {
   tags = {
-    name = "sg"
+    name = "sg-nlb"
   }
 }
