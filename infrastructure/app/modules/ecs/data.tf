@@ -61,6 +61,14 @@ data "aws_secretsmanager_secret_version" "db_secrets_version" {
   secret_id = data.aws_secretsmanager_secret.db_secrets.id
 }
 
+data "aws_secretsmanager_secret" "dd_api_key" {
+  name = "dd_api_key"
+}
+
+data "aws_secretsmanager_secret_version" "dd_api_key_version" {
+  secret_id = data.aws_secretsmanager_secret.dd_api_key.id
+}
+
 data "aws_db_instance" "db" {
   db_instance_identifier = "bands-postgres-14"
 }

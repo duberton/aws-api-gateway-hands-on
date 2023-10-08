@@ -27,6 +27,17 @@ resource "aws_iam_policy" "execution_role_policy" {
 }
 
 data "aws_iam_policy_document" "execution_role_document" {
+
+  statement {
+    resources = ["*"]
+
+    actions = [
+      "ecs:ListClusters",
+      "ecs:ListContainerInstances",
+      "ecs:DescribeContainerInstances"
+    ]
+  }
+
   statement {
     resources = ["*"]
 
@@ -64,8 +75,7 @@ data "aws_iam_policy_document" "execution_role_document" {
     resources = ["*"]
 
     actions = [
-      "ssm:GetParameters",
-      "secretsmanager:GetSecretValue"
+      "ssm:GetParameters"
     ]
   }
 

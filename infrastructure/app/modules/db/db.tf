@@ -21,7 +21,7 @@ module "db" {
   storage_encrypted           = false
   maintenance_window          = "Mon:00:00-Mon:03:00"
   backup_window               = "03:00-06:00"
-  backup_retention_period     = 0
+  backup_retention_period     = 1
   deletion_protection         = false
   manage_master_user_password = false
 

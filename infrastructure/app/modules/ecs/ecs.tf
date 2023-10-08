@@ -3,6 +3,7 @@ locals {
   db_url      = data.aws_db_instance.db.endpoint
   db_user     = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:user::"
   db_password = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:password::"
+  dd_api_key  = "${jsondecode(data.aws_secretsmanager_secret_version.dd_api_key_version.secret_string).key}"
 }
 
 module "ecs" {
@@ -24,6 +25,54 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
 
   container_definitions = <<EOF
   [
+    {
+      "name": "datadog-agent",
+      "essential": false,
+      "image": "public.ecr.aws/datadog/agent:latest",
+      "environment": [
+        {
+          "name": "DD_API_KEY",
+          "value": "${local.dd_api_key}"
+        },
+        {
+          "name": "DD_SITE",
+          "value": "datadoghq.com"
+        },
+        {
+          "name": "DD_SERVICE",
+          "value": "${var.application_name}"
+        },
+        {
+          "name": "DD_ENV",
+          "value": "dev"
+        },
+        {
+          "name": "ECS_FARGATE",
+          "value": "true"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/fargate-task-definition",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      },
+      "healthCheck": {
+        "retries": 3,
+        "command": [
+          "CMD-SHELL",
+          "agent health"
+          ],
+        "timeout": 2,
+        "interval": 5,
+        "startPeriod": 15
+      },
+      "cpu": 256,
+      "memory": 512
+    },
     {
       "name": "${var.application_name}",
       "image": "${data.aws_ecr_repository.ecr.repository_url}:latest",
@@ -58,7 +107,6 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
           "awslogs-group": "/aws/ecs/${var.application_name}",
           "awslogs-stream-prefix": "ecs",
           "awslogs-create-group": "true"
-
         }
       },
       "healthCheck": {
@@ -79,8 +127,8 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
 
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  memory                   = "1024"
-  cpu                      = "512"
+  memory                   = "2048"
+  cpu                      = "1024"
   execution_role_arn       = data.aws_iam_role.execution_role.arn
   task_role_arn            = data.aws_iam_role.task_role.arn
 }
@@ -102,8 +150,8 @@ resource "aws_ecs_service" "ecs_service" {
     security_groups = [data.aws_security_group.sg_ecs.id]
   }
 
-  deployment_maximum_percent         = 100
-  deployment_minimum_healthy_percent = 0
+  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = 100
 
   load_balancer {
     target_group_arn = data.aws_lb_target_group.tg.arn

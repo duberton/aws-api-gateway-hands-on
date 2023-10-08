@@ -14,7 +14,26 @@ module "sg_lb" {
     }
   ]
 
-  egress_rules = ["all-all"]
+  egress_with_cidr_blocks = [
+    {
+      from_port   = 8080
+      to_port     = 8080
+      protocol    = "tcp"
+      cidr_blocks = "10.99.3.0/24"
+    },
+    {
+      from_port   = 8080
+      to_port     = 8080
+      protocol    = "tcp"
+      cidr_blocks = "10.99.4.0/24"
+    },
+    {
+      from_port   = 8080
+      to_port     = 8080
+      protocol    = "tcp"
+      cidr_blocks = "10.99.5.0/24"
+    }
+  ]
 
   tags = {
     name = "sg-nlb"
@@ -29,14 +48,42 @@ module "sg_ecs" {
 
   ingress_with_source_security_group_id = [
     {
-      protocol = "tcp"
+      protocol                 = "tcp"
       from_port                = 8080
       to_port                  = 8080
       source_security_group_id = module.sg_lb.security_group_id
     }
   ]
 
-  egress_rules = ["all-all"]
+  # egress_rules = ["all-all"]
+
+  egress_with_cidr_blocks = [
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      cidr_blocks = "10.99.3.0/24"
+    },
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      cidr_blocks = "10.99.4.0/24"
+    },
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      cidr_blocks = "10.99.5.0/24"
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
+
 
   tags = {
     name = "sg-ecs"
@@ -51,7 +98,7 @@ module "sg_db" {
 
   ingress_with_source_security_group_id = [
     {
-      protocol = "tcp"
+      protocol                 = "tcp"
       from_port                = 5432
       to_port                  = 5432
       source_security_group_id = module.sg_ecs.security_group_id

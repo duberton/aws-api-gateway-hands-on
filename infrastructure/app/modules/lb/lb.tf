@@ -45,9 +45,3 @@ module "nlb" {
     Resource = "${var.application_name}-nlb-tg"
   }
 }
-
-resource "random_string" "tg-suffix" {
-  length  = 4
-  upper   = false
-  special = false
-}
