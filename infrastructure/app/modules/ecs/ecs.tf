@@ -43,6 +43,14 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
           "value": "${var.application_name}"
         },
         {
+          "name": "DD_APM_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "DD_APM_NON_LOCAL_TRAFFIC",
+          "value": "true"
+        },
+        {
           "name": "DD_ENV",
           "value": "dev"
         },

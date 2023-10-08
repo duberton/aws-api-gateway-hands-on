@@ -20,9 +20,10 @@ module "nlb" {
         enabled             = true
         interval            = 40
         path                = "/actuator/health"
+        port                = 8080
         healthy_threshold   = 2
-        unhealthy_threshold = 4
-        timeout             = 3
+        unhealthy_threshold = 2
+        timeout             = 2
         matcher             = "200-299"
       }
     }
