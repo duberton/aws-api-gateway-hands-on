@@ -19,6 +19,7 @@ module "db" {
   instance_class              = "db.t3.micro"
   allocated_storage           = 5
   storage_encrypted           = false
+  skip_final_snapshot         = true
   maintenance_window          = "Mon:00:00-Mon:03:00"
   backup_window               = "03:00-06:00"
   backup_retention_period     = 1

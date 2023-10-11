@@ -3,7 +3,7 @@ locals {
   db_url      = data.aws_db_instance.db.endpoint
   db_user     = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:user::"
   db_password = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:password::"
-  dd_api_key  = "${jsondecode(data.aws_secretsmanager_secret_version.dd_api_key_version.secret_string).key}"
+  dd_api_key  = "${data.aws_secretsmanager_secret_version.dd_api_key_version.arn}:key::"
 }
 
 module "ecs" {
@@ -29,10 +29,16 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       "name": "datadog-agent",
       "essential": false,
       "image": "public.ecr.aws/datadog/agent:latest",
-      "environment": [
+      "secrets": [
         {
           "name": "DD_API_KEY",
-          "value": "${local.dd_api_key}"
+          "valueFrom": "${local.dd_api_key}"
+        }
+      ],
+      "environment": [
+        {
+          "name": "DD_APM_IGNORE_RESOURCES",
+          "value": "GET /actuator/health"
         },
         {
           "name": "DD_SITE",
@@ -95,6 +101,10 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         }
       ],
       "environment": [
+        {
+          "name": "DD_SERVICE",
+          "value": "${var.application_name}"
+        },
         {
           "name": "DB_URL",
           "value": "jdbc:postgresql://${local.db_url}/postgres"
