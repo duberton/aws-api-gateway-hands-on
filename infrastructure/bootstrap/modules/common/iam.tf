@@ -32,6 +32,16 @@ data "aws_iam_policy_document" "execution_role_document" {
     resources = ["*"]
 
     actions = [
+      "ecs:ExecuteCommand",
+      "ssm:StartSession",
+      "ecs:DescribeTasks"
+    ]
+  }
+
+  statement {
+    resources = ["*"]
+
+    actions = [
       "ecs:ListClusters",
       "ecs:ListContainerInstances",
       "ecs:DescribeContainerInstances"

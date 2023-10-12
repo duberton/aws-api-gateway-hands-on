@@ -6,8 +6,10 @@ module "nlb" {
   load_balancer_type = "network"
 
   vpc_id          = data.aws_vpc.vpc.id
-  subnets         = data.aws_subnets.public.ids
+  subnets         = data.aws_subnets.private.ids
   security_groups = [data.aws_security_group.sg_nlb.id]
+
+  internal = true
 
   target_groups = [
     {
@@ -43,6 +45,6 @@ module "nlb" {
   }
 
   target_group_tags = {
-    Resource = "${var.application_name}-nlb-tg"
+    Resource = "${var.application_name}-nlb-tg-http"
   }
 }

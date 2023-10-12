@@ -4,7 +4,7 @@ data "aws_ecr_repository" "ecr" {
 
 data "aws_lb_target_group" "tg" {
   tags = {
-    Resource = "aws-api-gateway-hands-on-app-nlb-tg"
+    Resource = "aws-api-gateway-hands-on-app-nlb-tg-http"
   }
 }
 
