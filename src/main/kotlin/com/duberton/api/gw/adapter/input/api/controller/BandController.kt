@@ -9,6 +9,7 @@ import com.duberton.api.gw.application.port.output.DeleteBandPort
 import com.duberton.api.gw.application.port.output.FindBandByIdPort
 import com.duberton.api.gw.application.port.output.FindBandsPort
 import com.duberton.api.gw.application.port.output.SaveBandPort
+import com.duberton.api.gw.common.log.Logging
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -17,10 +18,13 @@ class BandController(
     private val findBandByIdPort: FindBandByIdPort,
     private val deleteBandPort: DeleteBandPort,
     private val findBandsPort: FindBandsPort
-) : BandApi {
+) : BandApi, Logging {
 
     override fun createBand(request: BandRequest): BandResponse {
-        return saveBandPort.save(request.toDomain()).toResponse()
+        logger.info("Starting to create a band {}", request.name)
+        val response = saveBandPort.save(request.toDomain()).toResponse()
+        logger.info("Done creating the band {}", response.name)
+        return response
     }
 
     override fun bands(offset: Int, page: Int): List<BandResponse> {

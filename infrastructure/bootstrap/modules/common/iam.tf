@@ -93,6 +93,29 @@ data "aws_iam_policy_document" "execution_role_document" {
     resources = ["*"]
 
     actions = [
+      "ecs:ExecuteCommand",
+      "ssm:StartSession",
+      "ecs:DescribeTasks"
+    ]
+  }
+
+  statement {
+    resources = ["*"]
+    effect    = "Allow"
+
+    actions = [
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
+    ]
+  }
+
+  statement {
+    resources = ["*"]
+
+    actions = [
+      "firehose:PutRecordBatch",
       "logs:CreateLogStream",
       "logs:CreateLogGroup",
       "logs:PutLogEvents"

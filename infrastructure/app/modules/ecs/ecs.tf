@@ -1,9 +1,10 @@
 locals {
   # db_url      = data.aws_ssm_parameter.db_url.value
-  db_url      = data.aws_db_instance.db.endpoint
-  db_user     = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:user::"
-  db_password = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:password::"
-  dd_api_key  = "${data.aws_secretsmanager_secret_version.dd_api_key_version.arn}:key::"
+  db_url         = data.aws_db_instance.db.endpoint
+  db_user        = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:user::"
+  db_password    = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:password::"
+  dd_api_key     = "${data.aws_secretsmanager_secret_version.dd_api_key_version.arn}:key::"
+  dd_api_key_raw = jsondecode(data.aws_secretsmanager_secret_version.dd_api_key_version.secret_string).key
 }
 
 module "ecs" {
@@ -26,6 +27,21 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   container_definitions = <<EOF
   [
     {
+      "name": "datadog-log-router-fluent-bit",
+      "essential": true,
+      "image": "amazon/aws-for-fluent-bit:latest",
+      "firelensConfiguration": {
+        "type": "fluentbit",
+        "options": {
+          "config-file-type": "file",
+          "config-file-value": "/fluent-bit/configs/parse-json.conf",
+          "enable-ecs-log-metadata": "true"
+        }
+      },
+      "cpu": 256,
+      "memory": 512
+    },
+    {
       "name": "datadog-agent",
       "essential": false,
       "image": "public.ecr.aws/datadog/agent:latest",
@@ -36,6 +52,14 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         }
       ],
       "environment": [
+        {
+          "name": "DD_LOGS_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL",
+          "value": "true"
+        },
         {
           "name": "DD_APM_IGNORE_RESOURCES",
           "value": "GET /actuator/health"
@@ -65,15 +89,6 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
           "value": "true"
         }
       ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/fargate-task-definition",
-          "awslogs-region": "us-east-1",
-          "awslogs-stream-prefix": "ecs",
-          "awslogs-create-group": "true"
-        }
-      },
       "healthCheck": {
         "retries": 3,
         "command": [
@@ -119,12 +134,14 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         }
       ],
       "logConfiguration": {
-        "logDriver": "awslogs",
+       "logDriver": "awsfirelens",
         "options": {
-          "awslogs-region": "us-east-1",
-          "awslogs-group": "/aws/ecs/${var.application_name}",
-          "awslogs-stream-prefix": "ecs",
-          "awslogs-create-group": "true"
+          "Name": "datadog",
+          "apikey": "${local.dd_api_key_raw}",
+          "dd_service": "${var.application_name}",
+          "dd_source": "${var.application_name}",
+          "dd_tags": "project:${var.application_name}",
+          "provider": "ecs"
         }
       },
       "healthCheck": {
