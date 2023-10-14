@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 
 interface Logging {
 
-    val logger: Logger
+    val log: Logger
         get() = LoggerFactory.getLogger(javaClass)
 
 }

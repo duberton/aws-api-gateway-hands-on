@@ -54,6 +54,7 @@ jobs:
           task-definition: task-definition.json
           container-name: ${{ vars.APP_NAME }}
           image: ${{ steps.build-push-image.outputs.image }}
+          environment-variables: "DD_VERSION=${{ github.sha }}"
 
       - name: Deploy Amazon ECS task definition
         id: deploy-task-definition
