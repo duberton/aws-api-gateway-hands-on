@@ -1,5 +1,4 @@
 locals {
-  # db_url      = data.aws_ssm_parameter.db_url.value
   db_url         = data.aws_db_instance.db.endpoint
   db_user        = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:user::"
   db_password    = "${data.aws_secretsmanager_secret_version.db_secrets_version.arn}:password::"

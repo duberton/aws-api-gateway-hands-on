@@ -1,10 +1,11 @@
 module "ecr" {
   source = "terraform-aws-modules/ecr/aws"
 
-  repository_name         = "${var.application_name}-ecr"
-  repository_type         = "private"
-  repository_force_delete = true
-
+  repository_image_tag_mutability = "MUTABLE"
+  repository_image_scan_on_push   = false
+  repository_name                 = "${var.application_name}-ecr"
+  repository_type                 = "private"
+  repository_force_delete         = true
   repository_lifecycle_policy = jsonencode({
     rules = [
       {
