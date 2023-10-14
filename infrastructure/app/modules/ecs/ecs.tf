@@ -120,6 +120,10 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
           "value": "${var.application_name}"
         },
         {
+          "name": "DD_VERSION",
+          "value": "latest"
+        },
+        {
           "name": "DB_URL",
           "value": "jdbc:postgresql://${local.db_url}/postgres"
         }

@@ -9,9 +9,11 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import kotlin.jvm.optionals.getOrNull
 
+
 class BandRepository(private val bandRepositoryJdbc: BandRepositoryJdbc) : BandRepositoryPort {
 
     override fun save(band: Band) = bandRepositoryJdbc.save(band.toEntity()).toDomain()
+    override fun existsById(id: String) = bandRepositoryJdbc.existsById(id)
 
     override fun findById(id: String) = bandRepositoryJdbc.findById(id).getOrNull()?.toDomain()
 
