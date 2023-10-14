@@ -21,21 +21,29 @@ class BandController(
 ) : BandApi, Logging {
 
     override fun createBand(request: BandRequest): BandResponse {
-        logger.info("Starting to create a band {}", request.name)
+        logger.info("Creating a band {}", request.name)
         val response = saveBandPort.save(request.toDomain()).toResponse()
-        logger.info("Done creating the band {}", response.name)
+        logger.info("Finished creating a band {}", response.name)
         return response
     }
 
     override fun bands(offset: Int, page: Int): List<BandResponse> {
-        return findBandsPort.execute(offset, page).map { it.toResponse() }
+        logger.info("Finding bands with offset {} and page {}", offset, page)
+        val bandsResponse = findBandsPort.execute(offset, page).map { it.toResponse() }
+        logger.info("Finished finding bands. Found {} bands", bandsResponse.size)
+        return bandsResponse
     }
 
     override fun band(bandId: String): BandResponse? {
-        return findBandByIdPort.execute(bandId)?.toResponse()
+        logger.info("Finding band by id {}", bandId)
+        val bandResponse = findBandByIdPort.execute(bandId)?.toResponse()
+        logger.info("Found band by id {}", bandId)
+        return bandResponse
     }
 
     override fun deleteBand(bandId: String) {
+        logger.info("Deleting a band by id {}", bandId)
         deleteBandPort.execute(bandId)
+        logger.info("Finished deleting the band by id {}", bandId)
     }
 }
