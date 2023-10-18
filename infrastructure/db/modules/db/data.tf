@@ -1,7 +1,3 @@
-data "aws_ssm_parameter" "db_url" {
-  name = "db_url"
-}
-
 data "aws_secretsmanager_secret" "db_secrets" {
   name = "db_secrets"
 }
@@ -24,6 +20,16 @@ data "aws_subnets" "private" {
   }
   tags = {
     type = "private"
+  }
+}
+
+data "aws_subnets" "public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.vpc.id]
+  }
+  tags = {
+    type = "public"
   }
 }
 

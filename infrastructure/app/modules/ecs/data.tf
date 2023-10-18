@@ -4,7 +4,7 @@ data "aws_ecr_repository" "ecr" {
 
 data "aws_lb_target_group" "tg" {
   tags = {
-    Resource = "aws-api-gateway-hands-on-app-nlb-tg-http"
+    Resource = "${var.application_name}-nlb-tg-http"
   }
 }
 
@@ -47,10 +47,6 @@ data "aws_iam_role" "execution_role" {
 
 data "aws_iam_role" "task_role" {
   name = "task_role"
-}
-
-data "aws_ssm_parameter" "db_url" {
-  name = "db_url"
 }
 
 data "aws_secretsmanager_secret" "db_secrets" {

@@ -4,5 +4,5 @@ provider "aws" {
 
 module "db" {
   source   = "./modules/db"
-  vpc_name = var.vpc_name
+  vpc_name = "${var.application_name}-vpc"
 }

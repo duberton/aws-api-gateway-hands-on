@@ -19,19 +19,19 @@ module "sg_lb" {
       from_port   = 8080
       to_port     = 8080
       protocol    = "tcp"
-      cidr_blocks = "10.99.3.0/24"
+      cidr_blocks = "10.99.0.48/28"
     },
     {
       from_port   = 8080
       to_port     = 8080
       protocol    = "tcp"
-      cidr_blocks = "10.99.4.0/24"
+      cidr_blocks = "10.99.0.64/28"
     },
     {
       from_port   = 8080
       to_port     = 8080
       protocol    = "tcp"
-      cidr_blocks = "10.99.5.0/24"
+      cidr_blocks = "10.99.0.80/28"
     }
   ]
 
@@ -62,19 +62,19 @@ module "sg_ecs" {
       from_port   = 5432
       to_port     = 5432
       protocol    = "tcp"
-      cidr_blocks = "10.99.3.0/24"
+      cidr_blocks = "10.99.0.48/28"
     },
     {
       from_port   = 5432
       to_port     = 5432
       protocol    = "tcp"
-      cidr_blocks = "10.99.4.0/24"
+      cidr_blocks = "10.99.0.64/28"
     },
     {
       from_port   = 5432
       to_port     = 5432
       protocol    = "tcp"
-      cidr_blocks = "10.99.5.0/24"
+      cidr_blocks = "10.99.0.80/28"
     },
     {
       from_port   = 443

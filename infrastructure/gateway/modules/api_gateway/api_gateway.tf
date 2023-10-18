@@ -34,7 +34,7 @@ data "template_file" "bands_openapi_file" {
 }
 
 resource "aws_api_gateway_vpc_link" "bands_rest_api_gateway_vpc_link" {
-  name        = "${var.application_name}-vpc_link"
+  name        = "${var.application_name}-vpc-link"
   target_arns = [data.aws_lb.nlb.arn]
 }
 
